@@ -1,11 +1,80 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Rock — MusiqHub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    
+<body class="bg-gray-900 text-gray-100">
+    <nav class="bg-gray-950 shadow-lg sticky top-0 z-50 border-b border-purple-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-2">
+                    <a href="index.html" class="flex items-center gap-2"><span class="text-3xl">🎵</span><span class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">MusiqHub</span></a>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-gray-400 hover:text-purple-400 transition">Accueil</a>
+                    <a href="pop.html" class="text-gray-400 hover:text-purple-400 transition">Pop</a>
+                    <a href="rock.html" class="text-red-300 font-semibold">Rock</a>
+                    <a href="hiphop.html" class="text-gray-400 hover:text-purple-400 transition">Hip-Hop</a>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="index.html" class="px-3 py-1 text-sm text-gray-300 hover:text-white">Retour</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-gradient-to-br from-red-800 to-gray-900 py-12 text-center">
+        <div class="max-w-5xl mx-auto px-4">
+            <h1 class="text-4xl font-bold mb-2">Actualités Rock</h1>
+            <p class="text-gray-200">Concerts, sorties et coulisses du rock.</p>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <article class="bg-gray-800 rounded-lg overflow-hidden shadow-md">
+                <div class="bg-gradient-to-r from-red-600 to-orange-600 h-44 flex items-center justify-center">
+                    <span class="text-6xl">🎸</span>
+                </div>
+                <div class="p-5">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="px-3 py-1 bg-red-900 text-red-200 text-xs rounded-full">Rock</span>
+                        <span class="text-gray-500 text-xs">Il y a 3h</span>
+                    </div>
+                    <h2 class="text-xl font-semibold mb-2">Festival rock : billetterie ouverte</h2>
+                    <p class="text-gray-400 text-sm mb-4">La programmation du festival a été dévoilée avec de grands noms du rock français et internationaux.</p>
+                    <a href="#" class="text-red-300 hover:text-red-200 font-medium">Lire l'article →</a>
+                </div>
+            </article>
+
+            <article class="bg-gray-800 rounded-lg overflow-hidden shadow-md">
+                <div class="bg-gradient-to-r from-red-700 to-red-900 h-44 flex items-center justify-center">
+                    <span class="text-6xl">🤘</span>
+                </div>
+                <div class="p-5">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="px-3 py-1 bg-red-900 text-red-200 text-xs rounded-full">Rock</span>
+                        <span class="text-gray-500 text-xs">Hier</span>
+                    </div>
+                    <h2 class="text-xl font-semibold mb-2">Interview : nouveau groupe émergent</h2>
+                    <p class="text-gray-400 text-sm mb-4">Rencontre avec un groupe qui revisite le rock garage avec une touche moderne.</p>
+                    <a href="#" class="text-red-300 hover:text-red-200 font-medium">Lire l'article →</a>
+                </div>
+            </article>
+        </div>
+
+        <div class="text-center mt-10">
+            <a href="index.html" class="inline-block px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">Retour à l'accueil</a>
+        </div>
+    </main>
+
+    <footer class="bg-gray-950 text-gray-400 py-8 border-t border-purple-500">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm">
+            <p>© 2025 MusiqHub • Rock</p>
+        </div>
+    </footer>
 </body>
 </html>
