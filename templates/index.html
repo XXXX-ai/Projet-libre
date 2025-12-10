@@ -5,67 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MusiqHub - Actualités Musicales</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
-<body class="bg-gray-900 text-gray-100">
+<body class="site-body">
     <!-- Navbar -->
-    <nav class="bg-gray-950 shadow-lg sticky top-0 z-50 border-b border-purple-500">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center gap-2">
-                    <span class="text-3xl">🎵</span>
-                    <h1 class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">MusiqHub</h1>
+    <nav class="site-nav">
+        <div class="container">
+            <div class="nav-inner">
+                <div class="brand">
+                    <span class="logo">🎵</span>
+                    <span class="title">MusiqHub</span>
                 </div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="#" class="text-gray-400 hover:text-purple-400 transition">Accueil</a>
-                    <a href="#" class="text-gray-400 hover:text-purple-400 transition">Genres</a>
-                    <a href="#" class="text-gray-400 hover:text-purple-400 transition">Événements</a>
-                    <a href="#" class="text-gray-400 hover:text-purple-400 transition">Contact</a>
+                <div class="nav-links">
+                    <a href="#">Accueil</a>
+                    <a href="#">Genres</a>
+                    <a href="#">Événements</a>
+                    <a href="#">Contact</a>
                 </div>
-                <div class="flex space-x-4">
-                    <button class="px-4 py-2 text-purple-400 border border-purple-400 rounded-lg hover:bg-purple-900 hover:bg-opacity-20 transition">
-                        Connexion
-                    </button>
-                    <button class="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/50 transition">
-                        S'inscrire
-                    </button>
+                <div class="actions">
+                    <button class="btn btn-outline">Connexion</button>
+                    <button class="btn btn-primary">S'inscrire</button>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="bg-gradient-to-br from-purple-900 via-gray-900 to-pink-900 text-white py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-6xl font-bold mb-6">L'actualité musicale en direct</h2>
-            <p class="text-xl mb-8 text-gray-300">Suivez les dernières news de vos artistes et genres préférés</p>
+    <section class="hero">
+        <div class="container">
+            <h2>L'actualité musicale en direct</h2>
+            <p>Suivez les dernières news de vos artistes et genres préférés</p>
             
             <!-- Search Bar -->
-            <div class="flex gap-2 max-w-2xl mx-auto mb-8">
-                <input type="text" placeholder="Rechercher une actualité, un artiste..." class="flex-1 px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500">
-                <button class="px-8 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg hover:shadow-lg hover:shadow-pink-500/50 transition font-semibold">
-                    Chercher
-                </button>
+            <div class="search-bar">
+                <input type="text" placeholder="Rechercher une actualité, un artiste..." class="input">
+                <button class="btn btn-primary">Chercher</button>
             </div>
 
             <!-- Genre Quick Links -->
-                <div class="flex flex-wrap gap-3 justify-center">
-                <a href="./pop.html" class="px-4 py-2 bg-white bg-opacity-10 rounded-full hover:bg-opacity-20 transition border border-pink-400">Pop</a>
-                <a href="./rock.html" class="px-4 py-2 bg-white bg-opacity-10 rounded-full hover:bg-opacity-20 transition border border-red-400">Rock</a>
-                <a href="./hiphop.html" class="px-4 py-2 bg-white bg-opacity-10 rounded-full hover:bg-opacity-20 transition border border-yellow-400">Hip-Hop</a>
-                <a href="./jazz_page.html" class="px-4 py-2 bg-white bg-opacity-10 rounded-full hover:bg-opacity-20 transition border border-blue-400">Jazz</a>
-                <a href="./electro.html" class="px-4 py-2 bg-white bg-opacity-10 rounded-full hover:bg-opacity-20 transition border border-cyan-400">Électronique</a>
+            <div class="genre-links">
+                <a href="./pop.html" class="genre-pill">Pop</a>
+                <a href="./rock.html" class="genre-pill">Rock</a>
+                <a href="./hiphop.html" class="genre-pill">Hip-Hop</a>
+                <a href="./jazz_page.html" class="genre-pill">Jazz</a>
+                <a href="./electro.html" class="genre-pill">Électronique</a>
             </div>
         </div>
     </section>
 
     <!-- Genres Section -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <section class="container m-t-12">
         <h3 class="text-3xl font-bold mb-12 text-center">Explorer les genres</h3>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div class="genres-grid">
             <!-- Genre Card -->
             <a href="./pop.html" class="group">
-                <div class="bg-gradient-to-br from-pink-600 to-pink-900 rounded-lg p-6 hover:shadow-lg hover:shadow-pink-500/50 transition cursor-pointer h-32 flex flex-col justify-between">
+                <div class="genre-card">
                     <div>
                         <div class="text-4xl mb-2">🎤</div>
                         <h4 class="text-xl font-semibold">Pop</h4>
@@ -76,7 +70,7 @@
 
             <!-- Genre Card -->
             <a href="./rock.html" class="group">
-                <div class="bg-gradient-to-br from-red-600 to-red-900 rounded-lg p-6 hover:shadow-lg hover:shadow-red-500/50 transition cursor-pointer h-32 flex flex-col justify-between">
+                <div class="genre-card">
                     <div>
                         <div class="text-4xl mb-2">🎸</div>
                         <h4 class="text-xl font-semibold">Rock</h4>
@@ -87,7 +81,7 @@
 
             <!-- Genre Card -->
             <a href="./hiphop.html" class="group">
-                <div class="bg-gradient-to-br from-yellow-600 to-yellow-900 rounded-lg p-6 hover:shadow-lg hover:shadow-yellow-500/50 transition cursor-pointer h-32 flex flex-col justify-between">
+                <div class="genre-card">
                     <div>
                         <div class="text-4xl mb-2">🎙️</div>
                         <h4 class="text-xl font-semibold">Hip-Hop</h4>
@@ -98,7 +92,7 @@
 
             <!-- Genre Card -->
             <a href="./jazz_page.html" class="group">
-                <div class="bg-gradient-to-br from-blue-600 to-blue-900 rounded-lg p-6 hover:shadow-lg hover:shadow-blue-500/50 transition cursor-pointer h-32 flex flex-col justify-between">
+                <div class="genre-card">
                     <div>
                         <div class="text-4xl mb-2">🎷</div>
                         <h4 class="text-xl font-semibold">Jazz</h4>
@@ -109,7 +103,7 @@
 
             <!-- Genre Card -->
             <a href="./electro.html" class="group">
-                <div class="bg-gradient-to-br from-cyan-600 to-cyan-900 rounded-lg p-6 hover:shadow-lg hover:shadow-cyan-500/50 transition cursor-pointer h-32 flex flex-col justify-between">
+                <div class="genre-card">
                     <div>
                         <div class="text-4xl mb-2">🎚️</div>
                         <h4 class="text-xl font-semibold">Électronique</h4>
@@ -121,171 +115,145 @@
     </section>
 
     <!-- Latest News Section -->
-    <section class="bg-gray-800 py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h3 class="text-3xl font-bold mb-12 text-center">Actualités récentes</h3>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- News Card 1 -->
-                <div class="bg-gray-900 rounded-lg overflow-hidden hover:shadow-xl hover:shadow-pink-500/20 transition group">
-                    <div class="bg-gradient-to-r from-pink-600 to-purple-600 h-40 flex items-center justify-center overflow-hidden">
-                        <span class="text-6xl group-hover:scale-110 transition">🎵</span>
-                    </div>
-                    <div class="p-5">
-                        <div class="flex items-center gap-2 mb-2">
-                            <span class="px-3 py-1 bg-pink-900 text-pink-200 text-xs rounded-full">Pop</span>
-                            <span class="text-gray-500 text-xs">Il y a 2h</span>
-                        </div>
-                        <h4 class="text-lg font-semibold mb-2 group-hover:text-pink-400 transition">Taylor Swift annonce une nouvelle tournée mondiale</h4>
-                        <p class="text-gray-400 text-sm mb-4">La superstar annonce 156 dates à travers le monde pour 2025 et 2026, avec de nouvelles scènes révolutionnaires.</p>
-                        <button class="text-pink-400 hover:text-pink-300 font-medium text-sm">Lire plus →</button>
-                    </div>
-                </div>
+    <section class="container m-t-12">
+        <h3 class="text-3xl font-bold mb-12 text-center">Actualités récentes</h3>
 
-                <!-- News Card 2 -->
-                <div class="bg-gray-900 rounded-lg overflow-hidden hover:shadow-xl hover:shadow-red-500/20 transition group">
-                    <div class="bg-gradient-to-r from-red-600 to-orange-600 h-40 flex items-center justify-center overflow-hidden">
-                        <span class="text-6xl group-hover:scale-110 transition">🎸</span>
+        <div class="news-grid">
+            <div class="card">
+                <div class="media">🎵</div>
+                <div class="p-4">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                        <span class="tag" style="background:#2b0219;color:#ffd8ea">Pop</span>
+                        <span class="muted">Il y a 2h</span>
                     </div>
-                    <div class="p-5">
-                        <div class="flex items-center gap-2 mb-2">
-                            <span class="px-3 py-1 bg-red-900 text-red-200 text-xs rounded-full">Rock</span>
-                            <span class="text-gray-500 text-xs">Il y a 4h</span>
-                        </div>
-                        <h4 class="text-lg font-semibold mb-2 group-hover:text-red-400 transition">The Rolling Stones en concert à Paris</h4>
-                        <p class="text-gray-400 text-sm mb-4">Les légendes du rock reviennent en France pour deux soirs exceptionnels à l'Accor Arena. Billets en pré-vente dès demain.</p>
-                        <button class="text-red-400 hover:text-red-300 font-medium text-sm">Lire plus →</button>
-                    </div>
-                </div>
-
-                <!-- News Card 3 -->
-                <div class="bg-gray-900 rounded-lg overflow-hidden hover:shadow-xl hover:shadow-yellow-500/20 transition group">
-                    <div class="bg-gradient-to-r from-yellow-600 to-orange-600 h-40 flex items-center justify-center overflow-hidden">
-                        <span class="text-6xl group-hover:scale-110 transition">🎙️</span>
-                    </div>
-                    <div class="p-5">
-                        <div class="flex items-center gap-2 mb-2">
-                            <span class="px-3 py-1 bg-yellow-900 text-yellow-200 text-xs rounded-full">Hip-Hop</span>
-                            <span class="text-gray-500 text-xs">Il y a 6h</span>
-                        </div>
-                        <h4 class="text-lg font-semibold mb-2 group-hover:text-yellow-400 transition">Kendrick Lamar dévoile son nouvel album</h4>
-                        <p class="text-gray-400 text-sm mb-4">Un album surprise est arrivé sans prévenir sur toutes les plateformes. 16 pistes de pur génie à découvrir.</p>
-                        <button class="text-yellow-400 hover:text-yellow-300 font-medium text-sm">Lire plus →</button>
-                    </div>
-                </div>
-
-                <!-- News Card 4 -->
-                <div class="bg-gray-900 rounded-lg overflow-hidden hover:shadow-xl hover:shadow-blue-500/20 transition group">
-                    <div class="bg-gradient-to-r from-blue-600 to-purple-600 h-40 flex items-center justify-center overflow-hidden">
-                        <span class="text-6xl group-hover:scale-110 transition">🎷</span>
-                    </div>
-                    <div class="p-5">
-                        <div class="flex items-center gap-2 mb-2">
-                            <span class="px-3 py-1 bg-blue-900 text-blue-200 text-xs rounded-full">Jazz</span>
-                            <span class="text-gray-500 text-xs">Il y a 8h</span>
-                        </div>
-                        <h4 class="text-lg font-semibold mb-2 group-hover:text-blue-400 transition">Festival de Jazz de Montreux 2025 programmation</h4>
-                        <p class="text-gray-400 text-sm mb-4">Les plus grands noms du jazz se donnent rendez-vous en juillet au bord du lac Léman pour une édition exceptionnelle.</p>
-                        <button class="text-blue-400 hover:text-blue-300 font-medium text-sm">Lire plus →</button>
-                    </div>
-                </div>
-
-                <!-- News Card 5 -->
-                <div class="bg-gray-900 rounded-lg overflow-hidden hover:shadow-xl hover:shadow-cyan-500/20 transition group">
-                    <div class="bg-gradient-to-r from-cyan-600 to-blue-600 h-40 flex items-center justify-center overflow-hidden">
-                        <span class="text-6xl group-hover:scale-110 transition">🎚️</span>
-                    </div>
-                    <div class="p-5">
-                        <div class="flex items-center gap-2 mb-2">
-                            <span class="px-3 py-1 bg-cyan-900 text-cyan-200 text-xs rounded-full">Électronique</span>
-                            <span class="text-gray-500 text-xs">Il y a 10h</span>
-                        </div>
-                        <h4 class="text-lg font-semibold mb-2 group-hover:text-cyan-400 transition">Daft Punk annonce un grand retour surprise</h4>
-                        <p class="text-gray-400 text-sm mb-4">Les maîtres de l'électronique seraient en studio pour préparer un nouvel album révolutionnaire selon nos sources.</p>
-                        <button class="text-cyan-400 hover:text-cyan-300 font-medium text-sm">Lire plus →</button>
-                    </div>
-                </div>
-
-                <!-- News Card 6 -->
-                <div class="bg-gray-900 rounded-lg overflow-hidden hover:shadow-xl hover:shadow-purple-500/20 transition group">
-                    <div class="bg-gradient-to-r from-purple-600 to-pink-600 h-40 flex items-center justify-center overflow-hidden">
-                        <span class="text-6xl group-hover:scale-110 transition">🎤</span>
-                    </div>
-                    <div class="p-5">
-                        <div class="flex items-center gap-2 mb-2">
-                            <span class="px-3 py-1 bg-purple-900 text-purple-200 text-xs rounded-full">Pop</span>
-                            <span class="text-gray-500 text-xs">Il y a 12h</span>
-                        </div>
-                        <h4 class="text-lg font-semibold mb-2 group-hover:text-purple-400 transition">The Weeknd remporte un nouvel Grammy Award</h4>
-                        <p class="text-gray-400 text-sm mb-4">L'artiste canadien ajoute une nouvelle récompense à son impressionnante collection avec son dernier hit.</p>
-                        <button class="text-purple-400 hover:text-purple-300 font-medium text-sm">Lire plus →</button>
-                    </div>
+                    <h4 style="margin:6px 0 8px">Taylor Swift annonce une nouvelle tournée mondiale</h4>
+                    <p class="muted text-ellipsis">La superstar annonce 156 dates à travers le monde pour 2025 et 2026, avec de nouvelles scènes révolutionnaires.</p>
+                    <button class="btn btn-outline" style="margin-top:8px">Lire plus →</button>
                 </div>
             </div>
 
-            <div class="text-center mt-12">
-                <button class="px-8 py-3 border-2 border-purple-500 text-purple-400 rounded-lg hover:bg-purple-900 hover:bg-opacity-20 transition font-semibold">
-                    Voir toutes les actualités
-                </button>
+            <div class="card">
+                <div class="media">🎸</div>
+                <div class="p-4">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                        <span class="tag" style="background:#2a0505;color:#ffd8d8">Rock</span>
+                        <span class="muted">Il y a 4h</span>
+                    </div>
+                    <h4 style="margin:6px 0 8px">The Rolling Stones en concert à Paris</h4>
+                    <p class="muted text-ellipsis">Les légendes du rock reviennent en France pour deux soirs exceptionnels à l'Accor Arena. Billets en pré-vente dès demain.</p>
+                    <button class="btn btn-outline" style="margin-top:8px">Lire plus →</button>
+                </div>
             </div>
+
+            <div class="card">
+                <div class="media">🎙️</div>
+                <div class="p-4">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                        <span class="tag" style="background:#45350b;color:#fff7d6">Hip-Hop</span>
+                        <span class="muted">Il y a 6h</span>
+                    </div>
+                    <h4 style="margin:6px 0 8px">Kendrick Lamar dévoile son nouvel album</h4>
+                    <p class="muted text-ellipsis">Un album surprise est arrivé sans prévenir sur toutes les plateformes. 16 pistes de pur génie à découvrir.</p>
+                    <button class="btn btn-outline" style="margin-top:8px">Lire plus →</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="media">🎷</div>
+                <div class="p-4">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                        <span class="tag" style="background:#02102b;color:#dbeafe">Jazz</span>
+                        <span class="muted">Il y a 8h</span>
+                    </div>
+                    <h4 style="margin:6px 0 8px">Festival de Jazz de Montreux 2025 programmation</h4>
+                    <p class="muted text-ellipsis">Les plus grands noms du jazz se donnent rendez-vous en juillet au bord du lac Léman pour une édition exceptionnelle.</p>
+                    <button class="btn btn-outline" style="margin-top:8px">Lire plus →</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="media">🎚️</div>
+                <div class="p-4">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                        <span class="tag" style="background:#052022;color:#dbf7fa">Électronique</span>
+                        <span class="muted">Il y a 10h</span>
+                    </div>
+                    <h4 style="margin:6px 0 8px">Daft Punk annonce un grand retour surprise</h4>
+                    <p class="muted text-ellipsis">Les maîtres de l'électronique seraient en studio pour préparer un nouvel album révolutionnaire selon nos sources.</p>
+                    <button class="btn btn-outline" style="margin-top:8px">Lire plus →</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="media">🎤</div>
+                <div class="p-4">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                        <span class="tag" style="background:#2b0a2f;color:#f6e8ff">Pop</span>
+                        <span class="muted">Il y a 12h</span>
+                    </div>
+                    <h4 style="margin:6px 0 8px">The Weeknd remporte un nouvel Grammy Award</h4>
+                    <p class="muted text-ellipsis">L'artiste canadien ajoute une nouvelle récompense à son impressionnante collection avec son dernier hit.</p>
+                    <button class="btn btn-outline" style="margin-top:8px">Lire plus →</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center m-t-12">
+            <button class="btn btn-outline">Voir toutes les actualités</button>
         </div>
     </section>
 
     <!-- CTA Section -->
-    <section class="bg-gradient-to-r from-purple-900 to-pink-900 text-white py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <section class="hero">
+        <div class="container">
             <h3 class="text-4xl font-bold mb-6">Restez à jour sur la musique</h3>
-            <p class="text-xl mb-8 text-gray-200">Recevez les dernières actualités musicales directement dans votre inbox</p>
-            <div class="flex gap-2 max-w-md mx-auto">
-                <input type="email" placeholder="Votre email..." class="flex-1 px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500">
-                <button class="px-8 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg hover:shadow-lg hover:shadow-pink-500/50 transition font-semibold">
-                    S'abonner
-                </button>
+            <p class="text-xl mb-8 muted">Recevez les dernières actualités musicales directement dans votre inbox</p>
+            <div style="display:flex;gap:8px;max-width:420px;margin:0 auto">
+                <input type="email" placeholder="Votre email..." class="input">
+                <button class="btn btn-primary">S'abonner</button>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-950 text-gray-400 py-12 border-t border-purple-500">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+    <footer class="footer">
+        <div class="container">
+            <div style="display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:16px">
                 <div>
-                    <h4 class="text-white font-bold mb-4 flex items-center gap-2">
-                        <span>🎵</span> MusiqHub
-                    </h4>
-                    <p class="text-sm">Votre source d'actualités musicales en temps réel, suivez les artistes et genres que vous aimez.</p>
+                    <h4 style="font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px"><span>🎵</span> MusiqHub</h4>
+                    <p class="muted">Votre source d'actualités musicales en temps réel, suivez les artistes et genres que vous aimez.</p>
                 </div>
                 <div>
-                    <h4 class="text-white font-bold mb-4">Genres</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#pop" class="hover:text-purple-400 transition">Pop</a></li>
-                        <li><a href="#rock" class="hover:text-purple-400 transition">Rock</a></li>
-                        <li><a href="#hiphop" class="hover:text-purple-400 transition">Hip-Hop</a></li>
-                        <li><a href="#jazz" class="hover:text-purple-400 transition">Jazz</a></li>
-                        <li><a href="#electronic" class="hover:text-purple-400 transition">Électronique</a></li>
+                    <h4 style="font-weight:700;margin-bottom:8px">Genres</h4>
+                    <ul style="list-style:none;padding:0;margin:0;line-height:1.8">
+                        <li><a href="#pop">Pop</a></li>
+                        <li><a href="#rock">Rock</a></li>
+                        <li><a href="#hiphop">Hip-Hop</a></li>
+                        <li><a href="#jazz">Jazz</a></li>
+                        <li><a href="#electronic">Électronique</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="text-white font-bold mb-4">Ressources</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#" class="hover:text-purple-400 transition">À propos</a></li>
-                        <li><a href="#" class="hover:text-purple-400 transition">Contact</a></li>
-                        <li><a href="#" class="hover:text-purple-400 transition">Conditions d'utilisation</a></li>
-                        <li><a href="#" class="hover:text-purple-400 transition">Politique de confidentialité</a></li>
+                    <h4 style="font-weight:700;margin-bottom:8px">Ressources</h4>
+                    <ul style="list-style:none;padding:0;margin:0;line-height:1.8">
+                        <li><a href="#">À propos</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Conditions d'utilisation</a></li>
+                        <li><a href="#">Politique de confidentialité</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="text-white font-bold mb-4">Nous suivre</h4>
-                    <div class="flex space-x-4">
-                        <a href="#" class="hover:text-purple-400 transition">Twitter</a>
-                        <a href="#" class="hover:text-purple-400 transition">Instagram</a>
-                        <a href="#" class="hover:text-purple-400 transition">YouTube</a>
-                        <a href="#" class="hover:text-purple-400 transition">TikTok</a>
+                    <h4 style="font-weight:700;margin-bottom:8px">Nous suivre</h4>
+                    <div style="display:flex;gap:12px">
+                        <a href="#">X</a>
+                        <a href="#">Instagram</a>
+                        <a href="#">YouTube</a>
+                        <a href="#">TikTok</a>
                     </div>
                 </div>
             </div>
-            <hr class="border-gray-700 mb-6">
-            <p class="text-center text-sm">© 2025 MusiqHub. Tous droits réservés. 🎵</p>
+            <hr style="border-color:rgba(255,255,255,0.04);margin-bottom:12px">
+            <p class="muted" style="text-align:center;font-size:0.9rem">© 2025 MusiqHub. Tous droits réservés. 🎵</p>
         </div>
     </footer>
 </body>

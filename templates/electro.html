@@ -5,75 +5,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Électronique — MusiqHub</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
-<body class="bg-gray-900 text-gray-100">
-    <nav class="bg-gray-950 shadow-lg sticky top-0 z-50 border-b border-purple-500">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center gap-2">
-                    <a href="index.html" class="flex items-center gap-2"><span class="text-3xl">🎵</span><span class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">MusiqHub</span></a>
+<body class="site-body">
+    <nav class="site-nav">
+        <div class="container">
+            <div class="nav-inner">
+                <div class="brand"><a href="index.html" class="brand"><span class="logo">🎵</span><span class="title">MusiqHub</span></a></div>
+                <div class="nav-links">
+                    <a href="index.html">Accueil</a>
+                    <a href="pop.html">Pop</a>
+                    <a href="rock.html">Rock</a>
+                    <a href="hiphop.html">Hip-Hop</a>
                 </div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="index.html" class="text-gray-400 hover:text-purple-400 transition">Accueil</a>
-                    <a href="pop.html" class="text-gray-400 hover:text-purple-400 transition">Pop</a>
-                    <a href="rock.html" class="text-gray-400 hover:text-purple-400 transition">Rock</a>
-                    <a href="hiphop.html" class="text-gray-400 hover:text-purple-400 transition">Hip-Hop</a>
-                </div>
-                <div class="flex space-x-4">
-                    <a href="index.html" class="px-3 py-1 text-sm text-gray-300 hover:text-white">Retour</a>
-                </div>
+                <div class="actions"><a href="index.html" class="btn btn-outline">Retour</a></div>
             </div>
         </div>
     </nav>
 
-    <header class="bg-gradient-to-br from-cyan-700 to-gray-900 py-12 text-center">
-        <div class="max-w-5xl mx-auto px-4">
-            <h1 class="text-4xl font-bold mb-2">Actualités Électronique</h1>
-            <p class="text-gray-200">Nouvelles sorties, festivals et technologies sonores.</p>
+    <header class="hero">
+        <div class="container">
+            <h1>Actualités Électronique</h1>
+            <p>Nouvelles sorties, festivals et technologies sonores.</p>
         </div>
     </header>
 
     <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <article class="bg-gray-800 rounded-lg overflow-hidden shadow-md">
-                <div class="bg-gradient-to-r from-cyan-600 to-blue-600 h-44 flex items-center justify-center">
-                    <span class="text-6xl">🎚️</span>
-                </div>
-                <div class="p-5">
-                    <div class="flex items-center gap-2 mb-2">
-                        <span class="px-3 py-1 bg-cyan-900 text-cyan-200 text-xs rounded-full">Électronique</span>
-                        <span class="text-gray-500 text-xs">Il y a 4h</span>
+            <article class="card">
+                <div class="news-card">
+                    <div class="media">🎚️</div>
+                    <div class="p-4">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                            <span class="tag" style="background:#052022;color:#dbf7fa">Électronique</span>
+                            <span class="muted">Il y a 4h</span>
+                        </div>
+                        <h2 style="margin:6px 0 8px">Retour en studio : producteur légendaire</h2>
+                        <p class="muted text-ellipsis">Un producteur culte travaille sur un projet mystérieux qui excite la scène électronique.</p>
+                        <a href="#" class="btn btn-outline" style="margin-top:8px;display:inline-block">Lire l'article →</a>
                     </div>
-                    <h2 class="text-xl font-semibold mb-2">Retour en studio : producteur légendaire</h2>
-                    <p class="text-gray-400 text-sm mb-4">Un producteur culte travaille sur un projet mystérieux qui excite la scène électronique.</p>
-                    <a href="#" class="text-cyan-300 hover:text-cyan-200 font-medium">Lire l'article →</a>
                 </div>
             </article>
 
-            <article class="bg-gray-800 rounded-lg overflow-hidden shadow-md">
-                <div class="bg-gradient-to-r from-cyan-700 to-cyan-900 h-44 flex items-center justify-center">
-                    <span class="text-6xl">🔊</span>
-                </div>
-                <div class="p-5">
-                    <div class="flex items-center gap-2 mb-2">
-                        <span class="px-3 py-1 bg-cyan-900 text-cyan-200 text-xs rounded-full">Électronique</span>
-                        <span class="text-gray-500 text-xs">Hier</span>
+            <article class="card">
+                <div class="news-card">
+                    <div class="media">🔊</div>
+                    <div class="p-4">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                            <span class="tag" style="background:#052022;color:#dbf7fa">Électronique</span>
+                            <span class="muted">Hier</span>
+                        </div>
+                        <h2 style="margin:6px 0 8px">Festival techno : line-up dévoilé</h2>
+                        <p class="muted text-ellipsis">Les têtes d'affiche et les talents émergents se partageront les platines pour une nuit inoubliable.</p>
+                        <a href="#" class="btn btn-outline" style="margin-top:8px;display:inline-block">Lire l'article →</a>
                     </div>
-                    <h2 class="text-xl font-semibold mb-2">Festival techno : line-up dévoilé</h2>
-                    <p class="text-gray-400 text-sm mb-4">Les têtes d'affiche et les talents émergents se partageront les platines pour une nuit inoubliable.</p>
-                    <a href="#" class="text-cyan-300 hover:text-cyan-200 font-medium">Lire l'article →</a>
                 </div>
             </article>
         </div>
 
-        <div class="text-center mt-10">
-            <a href="index.html" class="inline-block px-6 py-3 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition">Retour à l'accueil</a>
+        <div class="text-center m-t-12">
+            <a href="index.html" class="btn btn-primary">Retour à l'accueil</a>
         </div>
     </main>
 
-    <footer class="bg-gray-950 text-gray-400 py-8 border-t border-purple-500">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm">
-            <p>© 2025 MusiqHub • Électronique</p>
+    <footer class="footer">
+        <div class="container">
+            <p class="muted" style="text-align:center;font-size:0.9rem">© 2025 MusiqHub • Électronique</p>
         </div>
     </footer>
 </body>
