@@ -5,25 +5,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MusiqHub - Actualités Musicales</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chargement des styles globaux -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    // Définir des couleurs personnalisées ou des utilitaires si on voulait se passer du bloc <style>
+                    // Ex: colors: { 'custom-rock': '#2a0505', ... }
+                }
+            }
+        }
+    </script>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
         /* Styles spécifiques à l'index */
+        /* Couleurs d'arrière-plan pour les médias (conservé pour la couleur dynamique) */
         .genre-card .media.pop { background-color: #2b0219; }
         .genre-card .media.rock { background-color: #2a0505; }
         .genre-card .media.hiphop { background-color: #45350b; }
         .genre-card .media.jazz { background-color: #02102b; }
         .genre-card .media.electronique { background-color: #052022; }
-        .genre-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+
+        /* Correction pour les émojis : assurer la taille et le centrage */
+        .media {
+            font-size: 3rem !important; /* Augmente la taille de l'émoji pour qu'il soit plus visible */
+            line-height: 1; /* Assure que l'émoji ne prend pas trop de hauteur */
+            display: flex; /* Ajouté pour s'assurer que le contenu est bien centré avec les classes tailwind */
+            justify-content: center; /* Centrage horizontal, même si les classes Tailwind sont dans le HTML, c'est une sécurité */
+            align-items: center; /* Centrage vertical */
+            padding: 1rem; /* Ajout d'un peu d'espace autour de l'émoji dans le conteneur */
+        }
+
+        /* Utilitaires spécifiques pour la couleur dynamique des tags d'actualités */
+        {% for genre in genres %}
+        .tag-{{ genre.key }} {
+            /* Utilisation de la couleur définie dans le backend pour le style */
+            background-color: {{ genre.color }};
+            /* Pour assurer un contraste (style pris des fichiers originaux) */
+            /* Ajustement de la couleur du texte selon les fichiers originaux */
+            {% if genre.key == 'rock' %} color: #ffd8d8; 
+            {% elif genre.key == 'pop' %} color: #ffd8ea;
+            {% elif genre.key == 'hiphop' %} color: #fff7d6; 
+            {% elif genre.key == 'jazz' %} color: #dbeafe; 
+            {% elif genre.key == 'electronique' %} color: #dbf7fa; 
+            {% else %} color: white;
+            {% endif %}
+        }
+        {% endfor %}
+        
+        /* Styles pour que le titre de l'actualité dans le card ressemble au h2 des anciens fichiers */
+        .news-card h3 {
+            margin: 6px 0 8px;
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 700; /* font-bold */
+        }
+        
+        /* Pour s'assurer que le lien .genre-card prend toute la place dans la carte parent */
+        .genre-card {
+            display: flex;
+            flex-direction: column;
+            height: 100%; /* Important pour que toutes les cartes aient la même hauteur */
+        }
+        
+        /* Pour la carte d'actualité */
+        .news-card {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Amélioration de l'aperçu du contenu pour une meilleure troncature sur plusieurs lignes */
+        .news-card .content-preview {
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* Limite à 2 lignes */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     </style>
 </head>
 <body class="site-body">
-    <!-- Navbar -->
     <nav class="site-nav">
         <div class="container">
             <div class="nav-inner">
@@ -33,18 +93,18 @@
                         <span class="title">MusiqHub</span>
                     </a>
                 </div>
-                <div class="nav-links">
-                    <a href="{{ url_for('index') }}">Accueil</a>
+                <div class="nav-links flex space-x-4 md:space-x-6">
+                    <a href="{{ url_for('index') }}" class="hover:text-white transition duration-150">Accueil</a>
                     {% for genre in genres %}
-                        <a href="{{ url_for('genre_page', genre_name=genre.key) }}">{{ genre.name }}</a>
+                        <a href="{{ url_for('genre_page', genre_name=genre.key) }}" class="hover:text-white transition duration-150">{{ genre.name }}</a>
                     {% endfor %}
                 </div>
                 <div class="actions">
                     {% if is_logged_in %}
-                        <span class="muted text-sm self-center hidden sm:inline">Connecté en tant que {{ user.username }}</span>
+                        <span class="muted text-sm self-center hidden sm:inline mr-2">Connecté en tant que {{ user.username }}</span>
                         <a href="{{ url_for('logout') }}" class="btn btn-outline">Déconnexion</a>
                     {% else %}
-                        <a href="{{ url_for('login') }}" class="btn btn-outline">Connexion</a>
+                        <a href="{{ url_for('login') }}" class="btn btn-outline mr-2">Connexion</a>
                         <a href="{{ url_for('register') }}" class="btn btn-primary">S'inscrire</a>
                     {% endif %}
                 </div>
@@ -52,23 +112,21 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
     <section class="hero">
         <div class="container">
-            <!-- Utilisation de h2 pour coller au style original -->
-            <h2>L'actualité musicale en direct</h2>
-            <p>Suivez les dernières news de vos artistes et genres préférés</p>
+            <h2 class="text-4xl sm:text-5xl font-extrabold mb-3">L'actualité musicale en direct</h2>
+            <p class="text-lg text-gray-400">Suivez les dernières news de vos artistes et genres préférés</p>
             
-             <!-- Search Bar -->
-            <div class="search-bar">
-                <!-- Ajout des classes Tailwind pour l'input -->
-                <input type="text" placeholder="Rechercher une actualité, un artiste, un genre..." class="w-full p-3 rounded-lg border border-gray-700 bg-gray-800 text-gray-100 placeholder-gray-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-150">
+             <div class="max-w-3xl mx-auto mt-8"> 
+                <form action="{{ url_for('index') }}" method="GET">
+                    <input type="text" name="q" placeholder="Rechercher une actualité, un artiste, un genre..." value="{{ search_query }}"
+                           class="w-full p-3 rounded-lg border border-gray-700 bg-gray-800 text-gray-100 placeholder-gray-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-150 shadow-lg">
+                </form>
             </div>
 
-            <!-- Affichage des messages flash -->
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
-                    <div class="mt-4 max-w-lg mx-auto">
+                    <div class="mt-6 max-w-xl mx-auto">
                         {% for category, message in messages %}
                             <div class="flash-message {{ category }}">{{ message }}</div>
                         {% endfor %}
@@ -78,20 +136,54 @@
         </div>
     </section>
 
-    <!-- Grille des Genres -->
-    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h2 class="text-3xl font-bold mb-8 text-center">Choisissez un genre</h2>
-        <div class="genre-grid">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        {% if search_query %}
+            <h2 class="text-3xl font-bold mb-10 text-center text-gray-100">Résultats de recherche pour "<span class="text-indigo-400">{{ search_query }}</span>"</h2>
+        {% else %}
+            <h2 class="text-3xl font-bold mb-10 text-center text-gray-100">Dernières Actualités</h2>
+        {% endif %}
+        
+        {% if actualites_data %}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for actualite in actualites_data %}
+                    <article class="card hover:shadow-2xl flex"> 
+                        <div class="news-card flex flex-col w-full"> 
+                            <div class="media flex justify-center items-center">
+                                {{ actualite.genre_emoji }}
+                            </div>
+                            
+                            <div class="p-4 flex flex-col flex-grow">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="tag tag-{{ actualite.genre_key }}">{{ actualite.genre_name }}</span>
+                                    <span class="muted text-xs">{{ actualite.display_date }}</span>
+                                </div>
+                                <h3>{{ actualite.title }}</h3>
+                                <p class="muted text-sm text-ellipsis content-preview mb-3">
+                                    {{ actualite.content }}
+                                </p>
+                                <a href="{{ url_for('genre_page', genre_name=actualite.genre_key) }}" 
+                                   class="btn btn-outline mt-auto w-fit">Lire l'article →</a>
+                            </div>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center text-gray-500 text-lg py-8">Aucune actualité trouvée. Soyez le premier à publier !</p>
+        {% endif %}
+
+        <h2 class="text-3xl font-bold mb-10 text-center mt-20 text-gray-100">Explorer par Genre</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
             {% for genre in genres %}
-                <article class="card">
-                    <a href="{{ url_for('genre_page', genre_name=genre.key) }}" class="genre-card">
-                        <div class="media {{ genre.key }}">
+                <article class="card hover:shadow-2xl flex"> 
+                    <a href="{{ url_for('genre_page', genre_name=genre.key) }}" class="genre-card w-full">
+                        <div class="media flex justify-center items-center {{ genre.key }}">
                             {{ genre.emoji }}
                         </div>
-                        <div class="p-6 text-center">
-                            <h3>{{ genre.name }}</h3>
-                            <p class="muted text-sm">Voir les annonces et publications.</p>
-                            <span class="btn btn-outline mt-4">Explorer →</span>
+                        <div class="p-6 text-center flex flex-col items-center flex-grow">
+                            <h3 class="text-2xl font-bold mb-1">{{ genre.name }}</h3>
+                            <p class="muted text-sm mb-4">Voir les annonces et publications.</p>
+                            <span class="btn btn-outline mt-auto">Explorer →</span>
                         </div>
                     </a>
                 </article>
@@ -99,43 +191,42 @@
         </div>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));gap:2rem;margin-bottom:1.5rem">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-6">
                 <div>
-                    <h4 style="font-weight:700;margin-bottom:8px">MusiqHub</h4>
-                    <ul style="list-style:none;padding:0;margin:0;line-height:1.8">
-                        <li><a href="{{ url_for('index') }}">Accueil</a></li>
-                        <li><a href="#genres">Genres</a></li>
+                    <h4 class="font-bold mb-2 text-gray-100">MusiqHub</h4>
+                    <ul class="space-y-1 text-sm">
+                        <li><a href="{{ url_for('index') }}" class="text-gray-400 hover:text-white transition duration-150">Accueil</a></li>
+                        <li><a href="#genres" class="text-gray-400 hover:text-white transition duration-150">Genres</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 style="font-weight:700;margin-bottom:8px">Genres</h4>
-                    <ul style="list-style:none;padding:0;margin:0;line-height:1.8">
+                    <h4 class="font-bold mb-2 text-gray-100">Genres</h4>
+                    <ul class="space-y-1 text-sm">
                         {% for genre in genres %}
-                            <li><a href="{{ url_for('genre_page', genre_name=genre.key) }}">{{ genre.name }}</a></li>
+                            <li><a href="{{ url_for('genre_page', genre_name=genre.key) }}" class="text-gray-400 hover:text-white transition duration-150">{{ genre.name }}</a></li>
                         {% endfor %}
                     </ul>
                 </div>
                 <div>
-                    <h4 style="font-weight:700;margin-bottom:8px">Ressources</h4>
-                    <ul style="list-style:none;padding:0;margin:0;line-height:1.8">
-                        <li><a href="#">À propos</a></li>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">Conditions d'utilisation</a></li>
+                    <h4 class="font-bold mb-2 text-gray-100">Ressources</h4>
+                    <ul class="space-y-1 text-sm">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-150">À propos</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-150">Contact</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-150">Conditions d'utilisation</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 style="font-weight:700;margin-bottom:8px">Nous suivre</h4>
-                    <div style="display:flex;gap:12px">
-                        <a href="#">X</a>
-                        <a href="#">Instagram</a>
+                    <h4 class="font-bold mb-2 text-gray-100">Nous suivre</h4>
+                    <div class="flex space-x-3 text-gray-400">
+                        <a href="#" class="hover:text-white transition duration-150">X</a>
+                        <a href="#" class="hover:text-white transition duration-150">Instagram</a>
                     </div>
                 </div>
             </div>
-            <hr style="border-color:rgba(255,255,255,0.04);margin-bottom:12px">
-            <p class="muted" style="text-align:center;font-size:0.9rem">© 2025 MusiqHub. Tous droits réservés. 🎵</p>
+            <hr class="border-gray-700 mb-3">
+            <p class="muted text-center text-sm">© 2025 MusiqHub. Tous droits réservés. 🎵</p>
         </div>
     </footer>
 </body>
