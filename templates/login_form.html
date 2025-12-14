@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion — MusiqHub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="site-body flex flex-col justify-center items-center min-h-screen p-4">
+    <div class="w-full max-w-md">
+        <div class="text-center mb-8">
+            <a href="{{ url_for('index') }}" class="brand justify-center mb-4">
+                <span class="logo text-4xl">🎵</span>
+                <span class="title text-3xl">MusiqHub</span>
+            </a>
+            <h1 class="text-2xl font-bold mt-4">Connectez-vous pour publier</h1>
+            <p class="muted text-sm mt-1">Utilisez l'un des comptes de démo ou inscrivez-vous.</p>
+        </div>
+
+        <!-- Messages Flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="mb-4">
+                    {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Formulaire -->
+        <div class="form-container">
+            <form action="{{ url_for('login') }}" method="POST">
+                <label for="email">Adresse Email</label>
+                <!-- Ajout des classes Tailwind pour l'input -->
+                <input type="email" id="email" name="email" placeholder="email@exemple.com" value="{{ email if email }}" required 
+                       class="w-full p-3 rounded-lg border border-gray-700 bg-gray-900 text-gray-100 mb-4 placeholder-gray-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-150">
+                
+                <label for="password">Mot de passe</label>
+                <!-- Ajout des classes Tailwind pour l'input -->
+                <input type="password" id="password" name="password" placeholder="********" required
+                       class="w-full p-3 rounded-lg border border-gray-700 bg-gray-900 text-gray-100 mb-4 placeholder-gray-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-150">
+                
+                <button type="submit" class="btn btn-primary w-full mt-4">Se connecter</button>
+            </form>
+            <div class="text-center mt-4">
+                <p class="text-sm muted">
+                    Pas encore de compte ? <a href="{{ url_for('register') }}" class="text-indigo-400 hover:text-indigo-300 font-semibold">Inscrivez-vous ici</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

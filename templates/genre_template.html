@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ genre_name }} — MusiqHub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        /* Style dynamique de l'en-tête */
+        .genre-header {
+            /* Assurez-vous que cette couleur est bien un background ou une variable de couleur */
+            background: linear-gradient(135deg, {{ genre_info.color }}, #111827);
+            padding: 4rem 0;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .announcement-card {
+            padding: 1rem;
+            border-radius: 0.75rem;
+            background-color: #1f2937;
+            border: 1px solid #374151;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body class="site-body">
+    <!-- Navbar -->
+    <nav class="site-nav">
+        <div class="container">
+            <div class="nav-inner">
+                <div class="brand">
+                    <a href="{{ url_for('index') }}" class="brand">
+                        <span class="logo">🎵</span>
+                        <span class="title">MusiqHub</span>
+                    </a>
+                </div>
+                <div class="nav-links">
+                    <a href="{{ url_for('index') }}">Accueil</a>
+                    <a href="{{ url_for('index') }}#genres">Genres</a>
+                    {% if is_logged_in %}
+                        <span class="muted text-sm self-center hidden sm:inline">Connecté en tant que {{ user.username }}</span>
+                    {% endif %}
+                </div>
+                <div class="actions">
+                     {% if is_logged_in %}
+                        <a href="{{ url_for('logout') }}" class="btn btn-outline">Déconnexion</a>
+                    {% else %}
+                        <a href="{{ url_for('login') }}" class="btn btn-outline">Connexion</a>
+                        <a href="{{ url_for('register') }}" class="btn btn-primary">S'inscrire</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero / En-tête du Genre -->
+    <header class="genre-header">
+        <div class="container">
+            <!-- Utilisation de h1 pour coller au style original -->
+            <h1 class="text-4xl font-extrabold mb-2">{{ genre_info.emoji }} Actualités {{ genre_name }}</h1>
+            <p class="text-xl text-gray-400">Toutes les annonces et publications de la communauté {{ genre_name }}.</p>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Messages Flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="mt-4 mb-8 max-w-3xl mx-auto">
+                    {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Formulaire d'Ajout d'Annonce (Visible uniquement si connecté) -->
+        {% if is_logged_in %}
+            <div class="form-container mb-12">
+                <h2 class="text-2xl font-bold mb-4 text-center">Publier une annonce {{ genre_name }}</h2>
+                <form action="{{ url_for('add_annonce', genre_name=genre_key) }}" method="POST">
+                    <label for="title">Titre</label>
+                    <!-- Ajout des classes Tailwind pour l'input -->
+                    <input type="text" id="title" name="title" placeholder="Concert, Recherche de musicien, Nouveau morceau..." required 
+                           class="w-full p-3 rounded-lg border border-gray-700 bg-gray-900 text-gray-100 mb-4 placeholder-gray-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-150">
+                    
+                    <label for="content">Contenu de l'annonce</label>
+                    <!-- Ajout des classes Tailwind pour le textarea -->
+                    <textarea id="content" name="content" rows="4" placeholder="Décrivez votre annonce ici..." required
+                              class="w-full p-3 rounded-lg border border-gray-700 bg-gray-900 text-gray-100 mb-4 placeholder-gray-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-150"></textarea>
+                    
+                    <button type="submit" class="btn btn-primary w-full mt-4">Publier l'annonce</button>
+                </form>
+            </div>
+        {% else %}
+            <div class="bg-gray-800 p-6 rounded-lg text-center mb-12 border border-gray-700">
+                <p class="text-lg font-semibold text-gray-300">Vous devez être connecté pour publier une annonce.</p>
+                <a href="{{ url_for('login') }}" class="btn btn-outline mt-4">Se connecter</a>
+            </div>
+        {% endif %}
+
+
+        <!-- Liste des Annonces -->
+        <h2 class="text-3xl font-bold mb-6 text-center">Dernières Annonces ({{ announcements|length }})</h2>
+        
+        {% if announcements %}
+            <div class="max-w-3xl mx-auto">
+                {% for annonce in announcements %}
+                    <div class="announcement-card">
+                        <div class="flex-between mb-2">
+                            <!-- Style du tag cohérent avec les anciens fichiers -->
+                            <span class="tag" style="background-color:{{ genre_info.color }}; color:#fff">{{ genre_name }}</span>
+                            <span class="muted text-sm">{{ annonce.display_date }}</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-1">{{ annonce.title }}</h3>
+                        <p class="muted mb-4">{{ annonce.content }}</p>
+                        <div class="flex justify-end text-sm font-semibold">
+                            <span class="text-gray-500">Posté par: {{ annonce.author_username }}</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center text-gray-500 text-lg">Aucune annonce trouvée pour le genre {{ genre_name }}. Soyez le premier à publier !</p>
+        {% endif %}
+
+        <div class="text-center m-t-12">
+            <a href="{{ url_for('index') }}" class="btn btn-primary">← Retour à l'accueil</a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="muted" style="text-align:center;font-size:0.9rem">© 2025 MusiqHub • {{ genre_name }}</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -5,7 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MusiqHub - Actualités Musicales</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chargement des styles globaux -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        /* Styles spécifiques à l'index */
+        .genre-card .media.pop { background-color: #2b0219; }
+        .genre-card .media.rock { background-color: #2a0505; }
+        .genre-card .media.hiphop { background-color: #45350b; }
+        .genre-card .media.jazz { background-color: #02102b; }
+        .genre-card .media.electronique { background-color: #052022; }
+        .genre-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+    </style>
 </head>
 <body class="site-body">
     <!-- Navbar -->
@@ -13,18 +28,25 @@
         <div class="container">
             <div class="nav-inner">
                 <div class="brand">
-                    <span class="logo">🎵</span>
-                    <span class="title">MusiqHub</span>
+                    <a href="{{ url_for('index') }}" class="brand">
+                        <span class="logo">🎵</span>
+                        <span class="title">MusiqHub</span>
+                    </a>
                 </div>
                 <div class="nav-links">
-                    <a href="#">Accueil</a>
-                    <a href="#">Genres</a>
-                    <a href="#">Événements</a>
-                    <a href="#">Contact</a>
+                    <a href="{{ url_for('index') }}">Accueil</a>
+                    {% for genre in genres %}
+                        <a href="{{ url_for('genre_page', genre_name=genre.key) }}">{{ genre.name }}</a>
+                    {% endfor %}
                 </div>
                 <div class="actions">
-                    <button class="btn btn-outline">Connexion</button>
-                    <button class="btn btn-primary">S'inscrire</button>
+                    {% if is_logged_in %}
+                        <span class="muted text-sm self-center hidden sm:inline">Connecté en tant que {{ user.username }}</span>
+                        <a href="{{ url_for('logout') }}" class="btn btn-outline">Déconnexion</a>
+                    {% else %}
+                        <a href="{{ url_for('login') }}" class="btn btn-outline">Connexion</a>
+                        <a href="{{ url_for('register') }}" class="btn btn-primary">S'inscrire</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -33,204 +55,67 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="container">
+            <!-- Utilisation de h2 pour coller au style original -->
             <h2>L'actualité musicale en direct</h2>
             <p>Suivez les dernières news de vos artistes et genres préférés</p>
             
-            <!-- Search Bar -->
+             <!-- Search Bar -->
             <div class="search-bar">
-                <input type="text" placeholder="Rechercher une actualité, un artiste..." class="input">
-                <button class="btn btn-primary">Chercher</button>
+                <!-- Ajout des classes Tailwind pour l'input -->
+                <input type="text" placeholder="Rechercher une actualité, un artiste, un genre..." class="w-full p-3 rounded-lg border border-gray-700 bg-gray-800 text-gray-100 placeholder-gray-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-150">
             </div>
 
-            <!-- Genre Quick Links -->
-            <div class="genre-links">
-                <a href="./pop.html" class="genre-pill">Pop</a>
-                <a href="./rock.html" class="genre-pill">Rock</a>
-                <a href="./hiphop.html" class="genre-pill">Hip-Hop</a>
-                <a href="./jazz_page.html" class="genre-pill">Jazz</a>
-                <a href="./electro.html" class="genre-pill">Électronique</a>
-            </div>
+            <!-- Affichage des messages flash -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="mt-4 max-w-lg mx-auto">
+                        {% for category, message in messages %}
+                            <div class="flash-message {{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
         </div>
     </section>
 
-    <!-- Genres Section -->
-    <section class="container m-t-12">
-        <h3 class="text-3xl font-bold mb-12 text-center">Explorer les genres</h3>
-        <div class="genres-grid">
-            <!-- Genre Card -->
-            <a href="./pop.html" class="group">
-                <div class="genre-card">
-                    <div>
-                        <div class="text-4xl mb-2">🎤</div>
-                        <h4 class="text-xl font-semibold">Pop</h4>
-                    </div>
-                    <p class="text-pink-200 text-sm">234 actualités</p>
-                </div>
-            </a>
-
-            <!-- Genre Card -->
-            <a href="./rock.html" class="group">
-                <div class="genre-card">
-                    <div>
-                        <div class="text-4xl mb-2">🎸</div>
-                        <h4 class="text-xl font-semibold">Rock</h4>
-                    </div>
-                    <p class="text-red-200 text-sm">189 actualités</p>
-                </div>
-            </a>
-
-            <!-- Genre Card -->
-            <a href="./hiphop.html" class="group">
-                <div class="genre-card">
-                    <div>
-                        <div class="text-4xl mb-2">🎙️</div>
-                        <h4 class="text-xl font-semibold">Hip-Hop</h4>
-                    </div>
-                    <p class="text-yellow-200 text-sm">567 actualités</p>
-                </div>
-            </a>
-
-            <!-- Genre Card -->
-            <a href="./jazz_page.html" class="group">
-                <div class="genre-card">
-                    <div>
-                        <div class="text-4xl mb-2">🎷</div>
-                        <h4 class="text-xl font-semibold">Jazz</h4>
-                    </div>
-                    <p class="text-blue-200 text-sm">123 actualités</p>
-                </div>
-            </a>
-
-            <!-- Genre Card -->
-            <a href="./electro.html" class="group">
-                <div class="genre-card">
-                    <div>
-                        <div class="text-4xl mb-2">🎚️</div>
-                        <h4 class="text-xl font-semibold">Électronique</h4>
-                    </div>
-                    <p class="text-cyan-200 text-sm">445 actualités</p>
-                </div>
-            </a>
+    <!-- Grille des Genres -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <h2 class="text-3xl font-bold mb-8 text-center">Choisissez un genre</h2>
+        <div class="genre-grid">
+            {% for genre in genres %}
+                <article class="card">
+                    <a href="{{ url_for('genre_page', genre_name=genre.key) }}" class="genre-card">
+                        <div class="media {{ genre.key }}">
+                            {{ genre.emoji }}
+                        </div>
+                        <div class="p-6 text-center">
+                            <h3>{{ genre.name }}</h3>
+                            <p class="muted text-sm">Voir les annonces et publications.</p>
+                            <span class="btn btn-outline mt-4">Explorer →</span>
+                        </div>
+                    </a>
+                </article>
+            {% endfor %}
         </div>
-    </section>
-
-    <!-- Latest News Section -->
-    <section class="container m-t-12">
-        <h3 class="text-3xl font-bold mb-12 text-center">Actualités récentes</h3>
-
-        <div class="news-grid">
-            <div class="card">
-                <div class="media">🎵</div>
-                <div class="p-4">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-                        <span class="tag" style="background:#2b0219;color:#ffd8ea">Pop</span>
-                        <span class="muted">Il y a 2h</span>
-                    </div>
-                    <h4 style="margin:6px 0 8px">Taylor Swift annonce une nouvelle tournée mondiale</h4>
-                    <p class="muted text-ellipsis">La superstar annonce 156 dates à travers le monde pour 2025 et 2026, avec de nouvelles scènes révolutionnaires.</p>
-                    <button class="btn btn-outline" style="margin-top:8px">Lire plus →</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="media">🎸</div>
-                <div class="p-4">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-                        <span class="tag" style="background:#2a0505;color:#ffd8d8">Rock</span>
-                        <span class="muted">Il y a 4h</span>
-                    </div>
-                    <h4 style="margin:6px 0 8px">The Rolling Stones en concert à Paris</h4>
-                    <p class="muted text-ellipsis">Les légendes du rock reviennent en France pour deux soirs exceptionnels à l'Accor Arena. Billets en pré-vente dès demain.</p>
-                    <button class="btn btn-outline" style="margin-top:8px">Lire plus →</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="media">🎙️</div>
-                <div class="p-4">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-                        <span class="tag" style="background:#45350b;color:#fff7d6">Hip-Hop</span>
-                        <span class="muted">Il y a 6h</span>
-                    </div>
-                    <h4 style="margin:6px 0 8px">Kendrick Lamar dévoile son nouvel album</h4>
-                    <p class="muted text-ellipsis">Un album surprise est arrivé sans prévenir sur toutes les plateformes. 16 pistes de pur génie à découvrir.</p>
-                    <button class="btn btn-outline" style="margin-top:8px">Lire plus →</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="media">🎷</div>
-                <div class="p-4">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-                        <span class="tag" style="background:#02102b;color:#dbeafe">Jazz</span>
-                        <span class="muted">Il y a 8h</span>
-                    </div>
-                    <h4 style="margin:6px 0 8px">Festival de Jazz de Montreux 2025 programmation</h4>
-                    <p class="muted text-ellipsis">Les plus grands noms du jazz se donnent rendez-vous en juillet au bord du lac Léman pour une édition exceptionnelle.</p>
-                    <button class="btn btn-outline" style="margin-top:8px">Lire plus →</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="media">🎚️</div>
-                <div class="p-4">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-                        <span class="tag" style="background:#052022;color:#dbf7fa">Électronique</span>
-                        <span class="muted">Il y a 10h</span>
-                    </div>
-                    <h4 style="margin:6px 0 8px">Daft Punk annonce un grand retour surprise</h4>
-                    <p class="muted text-ellipsis">Les maîtres de l'électronique seraient en studio pour préparer un nouvel album révolutionnaire selon nos sources.</p>
-                    <button class="btn btn-outline" style="margin-top:8px">Lire plus →</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="media">🎤</div>
-                <div class="p-4">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-                        <span class="tag" style="background:#2b0a2f;color:#f6e8ff">Pop</span>
-                        <span class="muted">Il y a 12h</span>
-                    </div>
-                    <h4 style="margin:6px 0 8px">The Weeknd remporte un nouvel Grammy Award</h4>
-                    <p class="muted text-ellipsis">L'artiste canadien ajoute une nouvelle récompense à son impressionnante collection avec son dernier hit.</p>
-                    <button class="btn btn-outline" style="margin-top:8px">Lire plus →</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="text-center m-t-12">
-            <button class="btn btn-outline">Voir toutes les actualités</button>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="hero">
-        <div class="container">
-            <h3 class="text-4xl font-bold mb-6">Restez à jour sur la musique</h3>
-            <p class="text-xl mb-8 muted">Recevez les dernières actualités musicales directement dans votre inbox</p>
-            <div style="display:flex;gap:8px;max-width:420px;margin:0 auto">
-                <input type="email" placeholder="Votre email..." class="input">
-                <button class="btn btn-primary">S'abonner</button>
-            </div>
-        </div>
-    </section>
+    </main>
 
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div style="display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:16px">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));gap:2rem;margin-bottom:1.5rem">
                 <div>
-                    <h4 style="font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px"><span>🎵</span> MusiqHub</h4>
-                    <p class="muted">Votre source d'actualités musicales en temps réel, suivez les artistes et genres que vous aimez.</p>
+                    <h4 style="font-weight:700;margin-bottom:8px">MusiqHub</h4>
+                    <ul style="list-style:none;padding:0;margin:0;line-height:1.8">
+                        <li><a href="{{ url_for('index') }}">Accueil</a></li>
+                        <li><a href="#genres">Genres</a></li>
+                    </ul>
                 </div>
                 <div>
                     <h4 style="font-weight:700;margin-bottom:8px">Genres</h4>
                     <ul style="list-style:none;padding:0;margin:0;line-height:1.8">
-                        <li><a href="#pop">Pop</a></li>
-                        <li><a href="#rock">Rock</a></li>
-                        <li><a href="#hiphop">Hip-Hop</a></li>
-                        <li><a href="#jazz">Jazz</a></li>
-                        <li><a href="#electronic">Électronique</a></li>
+                        {% for genre in genres %}
+                            <li><a href="{{ url_for('genre_page', genre_name=genre.key) }}">{{ genre.name }}</a></li>
+                        {% endfor %}
                     </ul>
                 </div>
                 <div>
@@ -239,7 +124,6 @@
                         <li><a href="#">À propos</a></li>
                         <li><a href="#">Contact</a></li>
                         <li><a href="#">Conditions d'utilisation</a></li>
-                        <li><a href="#">Politique de confidentialité</a></li>
                     </ul>
                 </div>
                 <div>
@@ -247,8 +131,6 @@
                     <div style="display:flex;gap:12px">
                         <a href="#">X</a>
                         <a href="#">Instagram</a>
-                        <a href="#">YouTube</a>
-                        <a href="#">TikTok</a>
                     </div>
                 </div>
             </div>

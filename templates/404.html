@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Introuvable</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="site-body flex flex-col justify-center items-center min-h-screen text-center p-4">
+    <div class="bg-gray-800 p-10 rounded-xl shadow-2xl border border-gray-700 max-w-lg mx-auto">
+        <div class="text-9xl font-extrabold text-indigo-600 mb-4">404</div>
+        <h1 class="text-4xl font-bold mb-3">Oups ! Page Introuvable</h1>
+        <p class="text-gray-400 mb-6 text-lg">
+            Nous n'avons pas trouvé la page que vous recherchez. Il est possible qu'elle ait été supprimée ou que l'adresse soit incorrecte.
+        </p>
+        <a href="{{ url_for('index') }}" class="btn btn-primary">Retour à l'accueil</a>
+    </div>
+</body>
+</html>
