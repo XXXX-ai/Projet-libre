@@ -3,7 +3,7 @@ import os
 from datetime import datetime
 import logging
 from urllib.parse import quote_plus
-from functools import wraps # Import nécessaire pour la fonction login_required (si utilisée plus tard)
+from functools import wraps
 
 # --- Configuration du logging ---
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -13,16 +13,13 @@ try:
     from pymongo import MongoClient
     from bson.objectid import ObjectId
 
-    # URI de connexion fournie par l'utilisateur
+
     MONGO_URI = "mongodb+srv://ladeuxiemebanane_db_user:PRbjP1WLFIEi7HHy@cluster0.ybqtkvc.mongodb.net/?appName=Cluster0"
     DB_NAME = "musiqhub_db"
 
-    # Initialisation du client MongoDB
-    # Utiliser serverSelectionTimeoutMS pour éviter que l'application ne se bloque si MongoDB est injoignable
     client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000)
     db = client[DB_NAME]
     announcement_collection = db["announcements"]
-    # Vérification de la connexion (simple ping)
     client.admin.command('ping')
     logging.info("Connexion à MongoDB réussie.")
     MONGO_READY = True
@@ -30,34 +27,28 @@ except Exception as e:
     logging.error(f"Erreur de connexion à MongoDB: {e}. Le site fonctionnera en mode limité/sans persistence.")
     MONGO_READY = False
 
-# --- App Setup ---
+
 app = Flask(__name__)
-# Clé secrète pour les sessions Flask
 app.secret_key = os.environ.get('MUSIQHUB_SECRET_KEY', 'dev-secret-change-me')
 
-# --- Utility Functions for Auth (Simplified for Demo) ---
-
-# Base de données d'utilisateurs simplifiée (À REMPLACER par une gestion sécurisée en production)
 USERS = {
-    "admin@musiqhub.com": {"password": "adminpassword", "username": "AdminMusiq"},
-    "user@musiqhub.com": {"password": "userpassword", "username": "MusicFan"},
-    "newuser@musiqhub.com": {"password": "PRbjP1WLFIEi7HHy", "username": "NouvelUtilisateur"}
+    "AdminMusiq": {"password": "adminpassword"},
+    "MusicFan": {"password": "userpassword"},
+    "NouvelUtilisateur": {"password": "PRbjP1WLFIEi7HHy"}
 }
-# NOTE: Nous allons modifier la base de données USERS directement pour l'enregistrement.
-# Dans une vraie application, cela irait dans MongoDB.
+
 
 def get_current_user():
     """Récupère les informations de l'utilisateur connecté via la session."""
-    user_email = session.get('user_email')
-    if user_email in USERS:
-        return {"email": user_email, "username": USERS[user_email]["username"]}
+    username = session.get('username')
+    if username in USERS:
+        return {"username": username}
     return None
 
 def is_logged_in():
     """Vérifie si un utilisateur est connecté."""
-    return 'user_email' in session and session['user_email'] in USERS
+    return 'username' in session and session['username'] in USERS
 
-# Fonction de décorateur pour s'assurer que l'utilisateur est connecté avant d'accéder à une route
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -87,24 +78,20 @@ def register():
         
     if request.method == 'POST':
         username = request.form.get('username', '').strip()
-        email = request.form.get('email', '').strip()
         password = request.form.get('password', '')
         
-        # Validation basique
-        if not username or not email or not password:
+        if not username or not password:
             flash("Tous les champs sont requis.", 'error')
-            return render_template('register_form.html', username=username, email=email)
+            return render_template('register_form.html', username=username)
 
-        if email in USERS:
-            flash("Cet email est déjà utilisé.", 'error')
-            return render_template('register_form.html', username=username, email=email)
+        if username in USERS:
+            flash("Ce nom d'utilisateur est déjà utilisé.", 'error')
+            return render_template('register_form.html', username=username)
         
-        # Enregistrement de l'utilisateur (Simplifié: en RAM)
-        USERS[email] = {"password": password, "username": username}
-        logging.info(f"Nouvel utilisateur enregistré: {email}")
+        USERS[username] = {"password": password}
+        logging.info(f"Nouvel utilisateur enregistré: {username}")
 
-        # Connexion automatique après l'enregistrement
-        session['user_email'] = email
+        session['username'] = username
         flash("Compte créé et connexion réussie!", 'success')
         return redirect(url_for('index'))
     
@@ -118,40 +105,91 @@ def login():
         return redirect(url_for('index'))
         
     if request.method == 'POST':
-        email = request.form.get('email')
+        username = request.form.get('username')
         password = request.form.get('password')
         
-        user_data = USERS.get(email)
+        user_data = USERS.get(username)
         if user_data and user_data["password"] == password:
-            session['user_email'] = email
+            session['username'] = username
             flash("Connexion réussie.", 'success')
             return redirect(url_for('index'))
         else:
-            flash("Email ou mot de passe incorrect.", 'error')
-            return render_template('login_form.html', email=email)
+            flash("Nom d'utilisateur ou mot de passe incorrect.", 'error')
+            return render_template('login_form.html', username=username)
     
     return render_template('login_form.html')
 
 @app.route('/logout')
 def logout():
     """Déconnexion utilisateur."""
-    session.pop('user_email', None)
+    session.pop('username', None)
     flash("Vous avez été déconnecté.", 'info')
     return redirect(url_for('index'))
 
-# --- Routes Principales et Genre ---
-
 @app.route('/')
 def index():
-    """Page d'accueil - Liste des genres disponibles."""
+    """Page d'accueil - Liste des genres disponibles et dernières actualités."""
     genres = [
-        {'name': 'Pop', 'key': 'pop', 'emoji': '🎤'},
-        {'name': 'Rock', 'key': 'rock', 'emoji': '🤘'},
-        {'name': 'Hip-Hop', 'key': 'hiphop', 'emoji': '🎤'},
-        {'name': 'Jazz', 'key': 'jazz', 'emoji': '🎺'},
-        {'name': 'Électronique', 'key': 'electronique', 'emoji': '🎧'}
+        {'name': 'Pop', 'key': 'pop', 'emoji': '🎤', 'color': '#2b0219'}, # Ajout des couleurs pour réutilisation
+        {'name': 'Rock', 'key': 'rock', 'emoji': '🤘', 'color': '#2a0505'},
+        {'name': 'Hip-Hop', 'key': 'hiphop', 'emoji': '🎤', 'color': '#45350b'},
+        {'name': 'Jazz', 'key': 'jazz', 'emoji': '🎺', 'color': '#02102b'},
+        {'name': 'Électronique', 'key': 'electronique', 'emoji': '🎧', 'color': '#052022'}
     ]
-    return render_template('index.html', genres=genres)
+    
+    genre_map = {g['key']: g for g in genres} # Map des genres pour lookup rapide
+    
+    search_query = request.args.get('q', '').strip()
+    actualites_data = []
+
+    if MONGO_READY:
+        try:
+            # Création du filtre de recherche MongoDB
+            mongo_filter = {}
+            if search_query:
+                # Utilisation d'une regex insensible à la casse pour titre ou contenu
+                # $options: 'i' pour rendre la recherche insensible à la casse
+                mongo_filter = {
+                    "$or": [
+                        {"title": {"$regex": search_query, "$options": "i"}},
+                        {"content": {"$regex": search_query, "$options": "i"}}
+                    ]
+                }
+
+            actualites_data = list(announcement_collection.find(
+                mongo_filter
+            ).sort("timestamp", -1).limit(15)) # Limite à 15 actualités
+
+            for actualite in actualites_data:
+                actualite['_id'] = str(actualite['_id'])
+                # Ajout des infos de genre et de formatage de date
+                genre_key = actualite['genre']
+                if genre_key in genre_map:
+                    actualite['genre_name'] = genre_map[genre_key]['name']
+                    actualite['genre_emoji'] = genre_map[genre_key]['emoji']
+                    actualite['genre_key'] = genre_key # Ajout de la clé pour l'URL
+                else:
+                    actualite['genre_name'] = 'Inconnu'
+                    actualite['genre_emoji'] = '❓'
+                    actualite['genre_key'] = 'inconnu'
+
+
+                try:
+                    actualite['display_date'] = datetime.fromisoformat(actualite['timestamp']).strftime('%d/%m/%Y à %H:%M')
+                except (ValueError, TypeError):
+                    actualite['display_date'] = 'Date inconnue'
+
+
+        except Exception as e:
+            logging.error(f"Erreur lors du chargement ou de la recherche des actualités: {e}")
+            flash(f"Erreur lors du chargement des actualités: {e}", 'error')
+
+    return render_template(
+        'index.html', 
+        genres=genres,
+        actualites_data=actualites_data,
+        search_query=search_query
+    )
 
 @app.route('/genre/<genre_name>')
 def genre_page(genre_name):
@@ -169,15 +207,12 @@ def genre_page(genre_name):
     announcements = []
     if MONGO_READY:
         try:
-            # Récupérer les annonces triées par date descendante
             announcements = list(announcement_collection.find(
                 {"genre": genre_key}
             ).sort("timestamp", -1))
             
-            # Formattage pour le template
             for a in announcements:
                 a['_id'] = str(a['_id'])
-                # S'assurer que 'timestamp' est une chaîne valide pour fromisoformat (ce qui est le cas avec isoformat())
                 try:
                     a['display_date'] = datetime.fromisoformat(a['timestamp']).strftime('%d/%m/%Y à %H:%M')
                 except (ValueError, TypeError):
@@ -196,7 +231,7 @@ def genre_page(genre_name):
     )
 
 @app.route('/add_annonce/<genre_name>', methods=['POST'])
-@login_required # S'assure que seul un utilisateur connecté peut poster
+@login_required
 def add_annonce(genre_name):
     """Ajouter une nouvelle annonce pour le genre spécifié."""
     if not MONGO_READY:
@@ -217,7 +252,6 @@ def add_annonce(genre_name):
         "title": title,
         "content": content,
         "genre": genre_key,
-        "author_email": user['email'],
         "author_username": user['username'],
         "timestamp": datetime.now().isoformat(),
     }
@@ -239,9 +273,8 @@ def page_not_found(e):
 
 
 # **********************************************
-# * BLOC DE LANCEMENT DE L'APPLICATION FLASK *
+#   BLOC DE LANCEMENT DE L'APPLICATION FLASK
 # **********************************************
 if __name__ == '__main__':
-    # Lance l'application sur http://127.0.0.1:5000/
-    # debug=True permet le rechargement automatique lors des modifications de code
+
     app.run(debug=True)

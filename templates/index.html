@@ -8,40 +8,32 @@
     <script>
         tailwind.config = {
             theme: {
-                extend: {
-                    // Définir des couleurs personnalisées ou des utilitaires si on voulait se passer du bloc <style>
-                    // Ex: colors: { 'custom-rock': '#2a0505', ... }
-                }
+                extend: {}
             }
         }
     </script>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
-        /* Styles spécifiques à l'index */
-        /* Couleurs d'arrière-plan pour les médias (conservé pour la couleur dynamique) */
+
         .genre-card .media.pop { background-color: #2b0219; }
         .genre-card .media.rock { background-color: #2a0505; }
         .genre-card .media.hiphop { background-color: #45350b; }
         .genre-card .media.jazz { background-color: #02102b; }
         .genre-card .media.electronique { background-color: #052022; }
 
-        /* Correction pour les émojis : assurer la taille et le centrage */
+
         .media {
-            font-size: 3rem !important; /* Augmente la taille de l'émoji pour qu'il soit plus visible */
-            line-height: 1; /* Assure que l'émoji ne prend pas trop de hauteur */
-            display: flex; /* Ajouté pour s'assurer que le contenu est bien centré avec les classes tailwind */
-            justify-content: center; /* Centrage horizontal, même si les classes Tailwind sont dans le HTML, c'est une sécurité */
-            align-items: center; /* Centrage vertical */
-            padding: 1rem; /* Ajout d'un peu d'espace autour de l'émoji dans le conteneur */
+            font-size: 3rem !important;
+            line-height: 1;
+            display: flex;
+            justify-content: center; 
+            align-items: center; 
+            padding: 1rem;
         }
 
-        /* Utilitaires spécifiques pour la couleur dynamique des tags d'actualités */
         {% for genre in genres %}
         .tag-{{ genre.key }} {
-            /* Utilisation de la couleur définie dans le backend pour le style */
             background-color: {{ genre.color }};
-            /* Pour assurer un contraste (style pris des fichiers originaux) */
-            /* Ajustement de la couleur du texte selon les fichiers originaux */
             {% if genre.key == 'rock' %} color: #ffd8d8; 
             {% elif genre.key == 'pop' %} color: #ffd8ea;
             {% elif genre.key == 'hiphop' %} color: #fff7d6; 
@@ -52,31 +44,31 @@
         }
         {% endfor %}
         
-        /* Styles pour que le titre de l'actualité dans le card ressemble au h2 des anciens fichiers */
+
         .news-card h3 {
             margin: 6px 0 8px;
-            font-size: 1.25rem; /* text-xl */
-            font-weight: 700; /* font-bold */
+            font-size: 1.25rem; 
+            font-weight: 700; 
         }
         
-        /* Pour s'assurer que le lien .genre-card prend toute la place dans la carte parent */
+
         .genre-card {
             display: flex;
             flex-direction: column;
-            height: 100%; /* Important pour que toutes les cartes aient la même hauteur */
+            height: 100%;
         }
         
-        /* Pour la carte d'actualité */
+
         .news-card {
             height: 100%;
             display: flex;
             flex-direction: column;
         }
 
-        /* Amélioration de l'aperçu du contenu pour une meilleure troncature sur plusieurs lignes */
+
         .news-card .content-preview {
             display: -webkit-box;
-            -webkit-line-clamp: 2; /* Limite à 2 lignes */
+            -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;

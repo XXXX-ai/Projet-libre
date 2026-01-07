@@ -32,9 +32,9 @@
         <!-- Formulaire -->
         <div class="form-container">
             <form action="{{ url_for('login') }}" method="POST">
-                <label for="email">Adresse Email</label>
+                <label for="username">Nom d'utilisateur</label>
                 <!-- Ajout des classes Tailwind pour l'input -->
-                <input type="email" id="email" name="email" placeholder="email@exemple.com" value="{{ email if email }}" required 
+                <input type="text" id="username" name="username" placeholder="Votre nom d'utilisateur" value="{{ username if username }}" required 
                        class="w-full p-3 rounded-lg border border-gray-700 bg-gray-900 text-gray-100 mb-4 placeholder-gray-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-150">
                 
                 <label for="password">Mot de passe</label>
